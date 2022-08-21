@@ -25,14 +25,17 @@ class ShoppingCartServiceImpl extends ShoppingCartService {
 
   override def updateTotalPrice(shoppingCart: ShoppingCart): ShoppingCart = {
     val total = shoppingCart.items.foldLeft(0.0)((acc, kv) => acc + kv._1.price * kv._2.value)
-    val shoppingCartWithTaxes = calculateTax(shoppingCart.copy(total = total.setScale(2, BigDecimal.RoundingMode.HALF_EVEN)))
+    val shoppingCartWithTaxes = calculateTax(shoppingCart.copy(total = round(total)))
     val totalWithTaxes = shoppingCartWithTaxes.total + shoppingCartWithTaxes.tax
-    shoppingCartWithTaxes.copy(totalWithTaxes = totalWithTaxes.setScale(2, BigDecimal.RoundingMode.HALF_EVEN))
+    shoppingCartWithTaxes.copy(totalWithTaxes = round(totalWithTaxes))
   }
 
   override def calculateTax(shoppingCart: ShoppingCart): ShoppingCart = {
     val taxRate = 0.125
     val taxes = shoppingCart.total * taxRate
-    shoppingCart.copy(tax = taxes.setScale(2, BigDecimal.RoundingMode.HALF_EVEN))
+    shoppingCart.copy(tax = round(taxes))
   }
+
+  def round(value: BigDecimal): BigDecimal =
+    value.setScale(2, BigDecimal.RoundingMode.HALF_EVEN)
 }
