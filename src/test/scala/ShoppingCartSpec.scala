@@ -50,7 +50,7 @@ class ShoppingCartSpec extends AnyFunSpec with Matchers with Fixture{
                 val expectedShoppingCart = shoppingCart
                 val result = shoppingCartService.addProduct(emptyShoppingCart, product, Quantity(1))
                 result shouldBe expectedShoppingCart
-                result.items.size == 1
+                result.items.size shouldEqual 1
             }
         }
 
@@ -70,8 +70,8 @@ class ShoppingCartSpec extends AnyFunSpec with Matchers with Fixture{
                     product.copy(2, "Ivory"),
                       Quantity(1)
                   )
+                result.items.size shouldEqual 2
                 result shouldBe shoppingCartWithTwoProducts
-                result.items.size == 2
             }
         }
     }
@@ -79,11 +79,23 @@ class ShoppingCartSpec extends AnyFunSpec with Matchers with Fixture{
     describe("Step 1 - Add five products to an empty Shopping Cart") {
         it("should contain five Products") {
             val result = shoppingCartService.addProduct(emptyShoppingCart, product, Quantity(5))
-            result shouldBe shoppingCartWithFiveDoveSoaps
             result.items.size shouldEqual 1
             val quantity = result.items.get(product)
-            quantity.value shouldBe Quantity(5)
-            result.total shouldBe 199.95
+            quantity.value shouldEqual Quantity(5)
+            result.total shouldEqual 199.95
+            result shouldBe shoppingCartWithFiveDoveSoaps
+        }
+    }
+
+    describe("Step 2 - Add additional products to an empty Shopping Cart (5 plus 3)") {
+        it("should contain eight Products") {
+            val partialResult = shoppingCartService.addProduct(emptyShoppingCart, product, Quantity(5))
+            val result = shoppingCartService.addProduct(partialResult, product, Quantity(3))
+            result.items.size shouldEqual 1
+            val quantity = result.items.get(product)
+            quantity.value shouldEqual Quantity(8)
+            result.total shouldEqual 319.92
+            result shouldBe shoppingCartWithEightDoveSoaps
         }
     }
 
@@ -106,6 +118,7 @@ object ShoppingCartSpec {
 
         val shoppingCartWithFiveDoveSoaps = shoppingCart.copy(items = Map(product -> Quantity(5)), total = 199.95, tax = 0.0)
 
+        val shoppingCartWithEightDoveSoaps = shoppingCart.copy(items = Map(product -> Quantity(8)), total = 319.92, tax = 0.0)
 
     }
 }
