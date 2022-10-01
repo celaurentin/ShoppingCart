@@ -27,7 +27,7 @@ class ShoppingCartServiceImpl extends ShoppingCartService {
     if (quantity.value == 0) shoppingCart
     else {
       val currentQuantity = shoppingCart.items.getOrElse(product, emptyQuantity)
-      val updatedQuantity = Quantity(currentQuantity.value + quantity.value)
+      val updatedQuantity = currentQuantity + quantity
       updateTotalPrice(
         shoppingCart.copy(items =
           shoppingCart.items.updated(product, updatedQuantity)
