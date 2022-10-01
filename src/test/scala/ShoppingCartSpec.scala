@@ -93,7 +93,7 @@ class ShoppingCartSpec extends AnyFunSpec with Matchers with Fixture {
       val quantity = result.items.get(doveProduct)
       quantity.value shouldEqual Quantity(5)
       result.total shouldEqual 199.95
-      result.tax shouldEqual 24.99
+      result.taxes shouldEqual 24.99
       result.totalWithTaxes shouldEqual 224.94
       result shouldBe shoppingCartWithFiveDoveSoaps
     }
@@ -115,7 +115,7 @@ class ShoppingCartSpec extends AnyFunSpec with Matchers with Fixture {
       quantity.value shouldEqual Quantity(8)
       result.total shouldEqual 319.92
       result.totalWithTaxes shouldEqual 359.91
-      result.tax shouldEqual 39.99
+      result.taxes shouldEqual 39.99
       result shouldBe shoppingCartWithEightDoveSoaps
     }
   }
@@ -126,7 +126,7 @@ class ShoppingCartSpec extends AnyFunSpec with Matchers with Fixture {
         val result = shoppingCartService.calculateTax(shoppingCart)
         val quantity = result.items.get(doveProduct)
         quantity.value shouldEqual Quantity(1)
-        result.tax shouldEqual 5.0
+        result.taxes shouldEqual 5.0
       }
     }
     describe(
@@ -144,7 +144,7 @@ class ShoppingCartSpec extends AnyFunSpec with Matchers with Fixture {
         val axeQuantity = result.items.get(axeProduct)
         doveQuantity.value shouldEqual Quantity(2)
         axeQuantity.value shouldEqual Quantity(2)
-        result.tax shouldEqual 35.00
+        result.taxes shouldEqual 35.00
         result.totalWithTaxes shouldEqual 314.96
         result shouldBe shoppingCartWithTwoDoveAndTwoAxe
       }
@@ -168,11 +168,11 @@ object ShoppingCartSpec {
       items = items,
       total = 39.99,
       totalWithTaxes = 44.99,
-      tax = 5.0
+      taxes = 5.0
     )
 
     val emptyShoppingCart =
-      shoppingCart.copy(items = Map.empty, total = 0.0, tax = 0.0)
+      shoppingCart.copy(items = Map.empty, total = 0.0, taxes = 0.0)
 
     val shoppingCartWithTwoProducts =
       shoppingCart.copy(
@@ -182,28 +182,28 @@ object ShoppingCartSpec {
         ),
         total = 79.98,
         totalWithTaxes = 89.98,
-        tax = 10.0
+        taxes = 10.0
       )
 
     val shoppingCartWithFiveDoveSoaps = shoppingCart.copy(
       items = Map(doveProduct -> Quantity(5)),
       total = 199.95,
       totalWithTaxes = 224.94,
-      tax = 24.99
+      taxes = 24.99
     )
 
     val shoppingCartWithEightDoveSoaps = shoppingCart.copy(
       items = Map(doveProduct -> Quantity(8)),
       total = 319.92,
       totalWithTaxes = 359.91,
-      tax = 39.99
+      taxes = 39.99
     )
 
     val shoppingCartWithTwoDoveAndTwoAxe = shoppingCart.copy(
       items = Map(doveProduct -> Quantity(2), axeProduct -> Quantity(2)),
       total = 279.96,
       totalWithTaxes = 314.96,
-      tax = 35.0
+      taxes = 35.0
     )
 
   }

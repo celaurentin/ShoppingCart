@@ -42,14 +42,15 @@ class ShoppingCartServiceImpl extends ShoppingCartService {
     val shoppingCartWithTaxes = calculateTax(
       shoppingCart.copy(total = round(total))
     )
-    val totalWithTaxes = shoppingCartWithTaxes.total + shoppingCartWithTaxes.tax
+    val totalWithTaxes =
+      shoppingCartWithTaxes.total + shoppingCartWithTaxes.taxes
     shoppingCartWithTaxes.copy(totalWithTaxes = round(totalWithTaxes))
   }
 
   override def calculateTax(shoppingCart: ShoppingCart): ShoppingCart = {
     val taxRate = 0.125
     val taxes = shoppingCart.total * taxRate
-    shoppingCart.copy(tax = round(taxes))
+    shoppingCart.copy(taxes = round(taxes))
   }
 
   def round(value: BigDecimal): BigDecimal =
