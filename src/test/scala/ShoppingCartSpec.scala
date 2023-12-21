@@ -216,6 +216,24 @@ class ShoppingCartSpec
         result.value.items.size shouldEqual 1
       }
     }
+    describe("Remove a product not present in the shopping cart") {
+      it("should return an error message") {
+        val result = shoppingCartService.removeProduct(
+          shoppingCartWithTwoProducts,
+          axeProduct,
+          Quantity(1)
+        )
+        result shouldBe Left("ShoppingCart has not enough items to complete this operation")
+      }
+      it("should return the original shopping cart") {
+        val result = shoppingCartService.removeProduct(
+          shoppingCartWithTwoProducts,
+          axeProduct,
+          Quantity(0)
+        )
+        result shouldBe Right(shoppingCartWithTwoProducts)
+      }
+    }
   }
 }
 

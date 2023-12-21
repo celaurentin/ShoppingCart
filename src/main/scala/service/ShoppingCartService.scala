@@ -41,9 +41,9 @@ class ShoppingCartServiceImpl extends ShoppingCartService {
     }
 
   override def updateTotalPrice(shoppingCart: ShoppingCart): ShoppingCart = {
-    val total = shoppingCart.items.foldLeft(BigDecimal(0.0))((acc, kv) =>
-      acc + kv._1.price * BigDecimal(kv._2.value)
-    )
+    val total = shoppingCart.items.foldLeft(BigDecimal(0.0)) {
+      case (acc, (product, quantity)) => acc + product.price * BigDecimal(quantity.value)
+    }
     val shoppingCartWithTaxes = calculateTax(
       shoppingCart.copy(total = round(total))
     )
